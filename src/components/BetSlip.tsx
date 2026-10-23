@@ -3,6 +3,7 @@ import {
   formatAmerican,
   formatMoney,
   payoutFor,
+  type BetStatus,
   type PlacedBet,
   type Selection,
 } from "@/lib/book";
@@ -13,12 +14,21 @@ interface Props {
   onStakeChange: (value: string) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
-  onPlace: () => void;
+  onPlace: () => unknown;
   placedBets: PlacedBet[];
   justPlaced: boolean;
+  placing?: boolean;
+  placeError?: string | null;
 }
 
 const QUICK_STAKES = [5, 10, 25, 50, 100];
+
+const STATUS_STYLES: Record<BetStatus, string> = {
+  pending: "border-white/15 bg-white/[0.06] text-zinc-300",
+  won: "border-lime-300/40 bg-lime-300/10 text-lime-300",
+  lost: "border-rose-400/30 bg-rose-400/10 text-rose-300",
+  push: "border-amber-300/30 bg-amber-300/10 text-amber-200",
+};
 
 export default function BetSlip({
   selections,
@@ -29,6 +39,8 @@ export default function BetSlip({
   onPlace,
   placedBets,
   justPlaced,
+  placing = false,
+  placeError = null,
 }: Props) {
   const stakeNum = parseFloat(stake);
   const validStake = Number.isFinite(stakeNum) && stakeNum > 0;
@@ -156,12 +168,22 @@ export default function BetSlip({
 
               <button
                 type="button"
-                disabled={!validStake}
+                disabled={!validStake || placing}
                 onClick={onPlace}
                 className="w-full rounded-xl bg-lime-400 py-3 text-sm font-black uppercase tracking-wider text-zinc-950 shadow-[0_8px_24px_rgba(163,230,53,0.25)] transition-all hover:bg-lime-300 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 disabled:shadow-none"
               >
-                {validStake ? `Place bet · ${formatMoney(stakeNum)}` : "Enter a stake"}
+                {placing
+                  ? "Placing…"
+                  : validStake
+                    ? `Place bet · ${formatMoney(stakeNum)}`
+                    : "Enter a stake"}
               </button>
+
+              {placeError && (
+                <p className="rounded-lg border border-rose-400/30 bg-rose-400/10 px-3 py-2 text-sm font-medium text-rose-200">
+                  {placeError}
+                </p>
+              )}
             </div>
           </>
         )}
@@ -187,6 +209,13 @@ export default function BetSlip({
                     <span className="ml-2 font-mono text-xs font-bold text-lime-300">
                       {formatAmerican(bet.combinedOdds)}
                     </span>
+                    {bet.status && (
+                      <span
+                        className={`ml-2 rounded-full border px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${STATUS_STYLES[bet.status]}`}
+                      >
+                        {bet.status}
+                      </span>
+                    )}
                   </span>
                   <span className="font-mono text-xs tabular-nums text-zinc-400">
                     {formatMoney(bet.stake)} → {formatMoney(bet.payout)}

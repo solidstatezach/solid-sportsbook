@@ -37,8 +37,14 @@ export interface Selection {
   matchup: string;
   market: string;
   pick: string; // "Buffalo Bills +3.5"
+  /** the raw option label, e.g. "Buffalo Bills" or "Over" */
+  label: string;
+  /** points/total line when the market has one, e.g. "+3.5" or "47.5" */
+  line?: string;
   odds: number; // American
 }
+
+export type BetStatus = "pending" | "won" | "lost" | "push";
 
 export interface PlacedBet {
   id: string;
@@ -47,6 +53,8 @@ export interface PlacedBet {
   combinedOdds: number; // American
   toWin: number;
   payout: number;
+  /** present for account-backed bets; local-mode bets stay unset (pending by nature) */
+  status?: BetStatus;
 }
 
 // ---------- odds math ----------
