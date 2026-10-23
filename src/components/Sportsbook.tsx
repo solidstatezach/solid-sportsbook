@@ -97,11 +97,11 @@ export default function Sportsbook() {
             <h1 className="text-lg font-black uppercase leading-none tracking-wide text-zinc-50">
               Solid <span className="text-lime-300">Sportsbook</span>
             </h1>
-            <p className="mt-1 text-xs text-zinc-500">Demo board · lines for illustration only</p>
+            <p className="mt-1 text-xs text-zinc-500">Betting board</p>
           </div>
         </div>
         <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-zinc-300">
-          Balance <span className="font-mono font-bold text-lime-300">$1,000.00</span> demo
+          Balance <span className="font-mono font-bold text-lime-300">$1,000.00</span>
         </span>
       </header>
 
@@ -131,10 +131,6 @@ export default function Sportsbook() {
           {games.map((game) => (
             <GameCard key={game.id} game={game} selections={selections} onToggle={toggle} />
           ))}
-          <p className="px-1 pt-1 text-center text-xs text-zinc-600">
-            Solid Sportsbook is a front-end demo. Odds are static sample lines — no real wagering,
-            no real money.
-          </p>
         </main>
 
         {/* slip — desktop sidebar */}

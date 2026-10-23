@@ -160,11 +160,8 @@ export default function BetSlip({
                 onClick={onPlace}
                 className="w-full rounded-xl bg-lime-400 py-3 text-sm font-black uppercase tracking-wider text-zinc-950 shadow-[0_8px_24px_rgba(163,230,53,0.25)] transition-all hover:bg-lime-300 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 disabled:shadow-none"
               >
-                {validStake ? `Place demo bet · ${formatMoney(stakeNum)}` : "Enter a stake"}
+                {validStake ? `Place bet · ${formatMoney(stakeNum)}` : "Enter a stake"}
               </button>
-              <p className="text-center text-[11px] text-zinc-500">
-                Demo only — no real money, no real wagers.
-              </p>
             </div>
           </>
         )}
@@ -172,14 +169,14 @@ export default function BetSlip({
 
       {justPlaced && (
         <div className="leg-in rounded-2xl border border-lime-300/40 bg-lime-300/10 px-4 py-3 text-sm font-semibold text-lime-200">
-          ✓ Demo bet placed — good luck. It&apos;s in your bets below.
+          ✓ Bet placed — good luck. It&apos;s in your bets below.
         </div>
       )}
 
       {placedBets.length > 0 && (
         <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/80">
           <h3 className="border-b border-white/[0.06] px-4 py-3 text-sm font-bold uppercase tracking-wider text-zinc-100">
-            My demo bets
+            My bets
           </h3>
           <ul className="divide-y divide-white/[0.06]">
             {placedBets.map((bet) => (

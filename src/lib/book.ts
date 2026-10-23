@@ -1,12 +1,12 @@
-// Solid Sportsbook — data model, demo lines, and odds math.
-// All lines are static demo data for the front-end. No real wagering.
+// Solid Sportsbook — data model, lines, and odds math.
+// All lines are static sample data for the front-end.
 
 export type League = "NFL" | "NBA" | "MLB" | "NHL";
 
 export type MarketKey = "spread" | "moneyline" | "total";
 
 export interface MarketOption {
-  /** e.g. "BUF", "Over" */
+  /** e.g. "Buffalo Bills", "Over" */
   label: string;
   /** e.g. "+3.5", "O 47.5" — points/total line, when the market has one */
   line?: string;
@@ -36,7 +36,7 @@ export interface Selection {
   league: League;
   matchup: string;
   market: string;
-  pick: string; // "BUF +3.5"
+  pick: string; // "Buffalo Bills +3.5"
   odds: number; // American
 }
 
@@ -84,7 +84,7 @@ export function formatMoney(n: number): string {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
 }
 
-// ---------- demo lines ----------
+// ---------- lines ----------
 
 function g(
   id: string,
@@ -137,14 +137,14 @@ function g(
 export const LEAGUES: ("All" | League)[] = ["All", "NFL", "NBA", "MLB", "NHL"];
 
 export const GAMES: Game[] = [
-  g("nfl-buf-kc", "NFL", "Sun 4:25 PM ET", "BUF Bills", "KC Chiefs", "+3", -110, -110, [125, -145], ["47.5", -110, -110]),
-  g("nfl-sf-dal", "NFL", "Sun 8:20 PM ET", "SF 49ers", "DAL Cowboys", "-2.5", -115, -105, [-135, 115], ["49.5", -105, -115]),
-  g("nfl-phi-nyg", "NFL", "Mon 8:15 PM ET", "PHI Eagles", "NY Giants", "-7", -110, -110, [-300, 245], ["44.5", -110, -110]),
-  g("nba-lal-bos", "NBA", "Today 7:30 PM ET", "LA Lakers", "BOS Celtics", "+5.5", -110, -110, [180, -210], ["224.5", -110, -110]),
-  g("nba-gsw-den", "NBA", "Today 10:00 PM ET", "GS Warriors", "DEN Nuggets", "+2", -105, -115, [110, -130], ["231.5", -115, -105]),
-  g("nba-nyk-mia", "NBA", "Tomorrow 7:00 PM ET", "NY Knicks", "MIA Heat", "-4", -110, -110, [-175, 150], ["218.5", -110, -110]),
-  g("mlb-nyy-hou", "MLB", "Today 8:05 PM ET", "NY Yankees", "HOU Astros", "+1.5", -170, 150, [120, -140], ["8.5", -105, -115]),
-  g("mlb-lad-sd", "MLB", "Today 9:40 PM ET", "LA Dodgers", "SD Padres", "-1.5", 130, -155, [-165, 140], ["7.5", -110, -110]),
-  g("nhl-edm-col", "NHL", "Today 9:00 PM ET", "EDM Oilers", "COL Avalanche", "+1.5", -190, 160, [105, -125], ["6.5", -120, 100]),
-  g("nhl-tor-bos", "NHL", "Tomorrow 7:00 PM ET", "TOR Maple Leafs", "BOS Bruins", "+1.5", -210, 175, [-105, -115], ["5.5", -110, -110]),
+  g("nfl-buf-kc", "NFL", "Sun 4:25 PM ET", "Buffalo Bills", "Kansas City Chiefs", "+3", -110, -110, [125, -145], ["47.5", -110, -110]),
+  g("nfl-sf-dal", "NFL", "Sun 8:20 PM ET", "San Francisco 49ers", "Dallas Cowboys", "-2.5", -115, -105, [-135, 115], ["49.5", -105, -115]),
+  g("nfl-phi-nyg", "NFL", "Mon 8:15 PM ET", "Philadelphia Eagles", "New York Giants", "-7", -110, -110, [-300, 245], ["44.5", -110, -110]),
+  g("nba-lal-bos", "NBA", "Today 7:30 PM ET", "Los Angeles Lakers", "Boston Celtics", "+5.5", -110, -110, [180, -210], ["224.5", -110, -110]),
+  g("nba-gsw-den", "NBA", "Today 10:00 PM ET", "Golden State Warriors", "Denver Nuggets", "+2", -105, -115, [110, -130], ["231.5", -115, -105]),
+  g("nba-nyk-mia", "NBA", "Tomorrow 7:00 PM ET", "New York Knicks", "Miami Heat", "-4", -110, -110, [-175, 150], ["218.5", -110, -110]),
+  g("mlb-nyy-hou", "MLB", "Today 8:05 PM ET", "New York Yankees", "Houston Astros", "+1.5", -170, 150, [120, -140], ["8.5", -105, -115]),
+  g("mlb-lad-sd", "MLB", "Today 9:40 PM ET", "Los Angeles Dodgers", "San Diego Padres", "-1.5", 130, -155, [-165, 140], ["7.5", -110, -110]),
+  g("nhl-edm-col", "NHL", "Today 9:00 PM ET", "Edmonton Oilers", "Colorado Avalanche", "+1.5", -190, 160, [105, -125], ["6.5", -120, 100]),
+  g("nhl-tor-bos", "NHL", "Tomorrow 7:00 PM ET", "Toronto Maple Leafs", "Boston Bruins", "+1.5", -210, 175, [-105, -115], ["5.5", -110, -110]),
 ];

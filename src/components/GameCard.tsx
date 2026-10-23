@@ -45,9 +45,9 @@ export default function GameCard({ game, selections, onToggle }: Props) {
           key={team}
           className="grid grid-cols-[1fr_repeat(3,64px)] items-center gap-2 px-4 py-2 last:pb-4 sm:grid-cols-[1fr_repeat(3,84px)]"
         >
-          <span className="truncate pr-1 text-sm font-semibold text-zinc-100">
+          <span className="pr-1 text-[13px] font-semibold leading-snug text-zinc-100 sm:text-sm">
             {team}
-            <span className="ml-2 text-[10px] font-medium uppercase tracking-wide text-zinc-500">
+            <span className="ml-2 whitespace-nowrap text-[10px] font-medium uppercase tracking-wide text-zinc-500">
               {row === 0 ? "Away" : "Home"}
             </span>
           </span>

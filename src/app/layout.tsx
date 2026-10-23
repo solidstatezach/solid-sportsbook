@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Solid Sportsbook — Demo Betting Board",
+  title: "Solid Sportsbook — Betting Board",
   description:
-    "A front-end demo sportsbook: sample lines, a working bet slip, and parlay math. No real wagering.",
+    "Solid Sportsbook: a bookmaker-style betting board with a working bet slip and parlay math for NFL, NBA, MLB, and NHL lines.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
