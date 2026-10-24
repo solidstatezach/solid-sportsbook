@@ -28,11 +28,12 @@ export interface DbBet {
   settled_at: string | null;
 }
 
-/** A row from public.profiles. */
+/** A row from public.profiles. is_admin arrives with the admin migration. */
 export interface Profile {
   id: string;
   display_name: string | null;
   balance: number | string;
+  is_admin?: boolean;
 }
 
 /** A row from the leaderboard_standings view. */
