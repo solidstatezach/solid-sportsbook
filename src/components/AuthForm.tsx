@@ -64,7 +64,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
           </h1>
           <p className="mt-1 text-xs leading-relaxed text-zinc-500">
             {isSignup
-              ? "You start with $1,000 in play money. Bragging rights are earned from there."
+              ? "You start with $15 in play money. Bragging rights are earned from there."
               : "Log in to bet against the board — and your friends."}
           </p>
         </header>
