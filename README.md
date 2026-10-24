@@ -42,7 +42,7 @@ only, no real funds anywhere. Setup takes about five minutes:
 
 How it plays:
 
-- Every account starts with **$1,000 in play money**. Placing a bet debits
+- Every account starts with **$15 in play money**. Placing a bet debits
   the balance through `place_bet()` — the balance can't go negative or be
   edited from the client; only a display name is client-writable.
 - All signed-in players can see each other's bets and the leaderboard.
