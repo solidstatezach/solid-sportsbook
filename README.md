@@ -47,11 +47,37 @@ How it plays:
   edited from the client; only a display name is client-writable.
 - All signed-in players can see each other's bets and the leaderboard.
   That's the point.
-- **Settling is manual for now**: after games finish, mark bets in the SQL
-  editor (`update bets set status = 'won', settled_at = now() where ...`)
-  and credit winners (`update profiles set balance = balance + <potential
-  payout> ...`; a `push` refunds the stake). An automatic scores feed is
-  the planned next step.
+- **Settling happens on the `/admin` page** — tap Won / Lost / Push on each
+  pending bet once the games finish (see "Running the book" below). An
+  automatic scores feed is the planned next step.
+
+## Running the book (admin)
+
+Once accounts are live, one account runs the book from the `/admin` page —
+no more SQL for day-to-day settling.
+
+1. **Run the admin migration** — after the main migration above, paste
+   `supabase/migrations/20261023000000_admin.sql` into the SQL editor and
+   run it. It adds an `is_admin` flag to profiles plus two locked-down
+   functions: `settle_bet()` and `admin_adjust_balance()`. Both check the
+   caller's `is_admin` inside the function, so only an admin can ever call
+   them successfully.
+2. **Make yourself the admin** — find your user id in Supabase Dashboard →
+   Authentication → Users, then run one line in the SQL editor:
+   `update public.profiles set is_admin = true where id = '<your user id>';`
+   Nobody can set this flag from the app (clients can only edit their own
+   display name), so it can't be grabbed by a player. An **Admin** link
+   appears in the header and on the leaderboard once you're flagged.
+3. **What `/admin` does:**
+   - **Pending bets** — every unsettled bet across all players, with the
+     picks, stake, odds, and payout. **Won** credits the full payout (stake
+     + winnings — the stake was already taken at placement), **Push**
+     refunds the stake, **Lost** credits nothing. Only pending bets can be
+     settled, and settling is final.
+   - **Players** — balances and W–L records, with a top-up box per player:
+     enter an amount and hit **Add** to credit play money (a rebuy when a
+     friend busts out). Negative amounts deduct, and a balance can never be
+     pushed below zero.
 
 ## Run it
 
@@ -74,7 +100,8 @@ Supabase (optional — auth, Postgres, RLS) for accounts and the leaderboard
   leaderboard standings
 - `src/lib/supabase/` — Supabase clients (browser/server/proxy) + the
   `isSupabaseEnabled` switch that keeps local mode working with no env vars
-- `supabase/migrations/` — schema, `place_bet()`, RLS, leaderboard view
+- `supabase/migrations/` — schema, `place_bet()`, RLS, leaderboard view,
+  plus the admin migration (`settle_bet()`, balance adjustments, `is_admin`)
 - `src/components/Sportsbook.tsx` — client shell: state, header, league rail,
   mobile slip bar
 - `src/components/GameCard.tsx` — one game's market grid
@@ -82,3 +109,5 @@ Supabase (optional — auth, Postgres, RLS) for accounts and the leaderboard
 - `src/components/BetSlip.tsx` — slip, stake entry, payout math, placed bets
 - `src/app/login`, `src/app/signup`, `src/app/leaderboard` — account pages
   and the standings table
+- `src/app/admin` — the book-runner's page: settle pending bets, top up
+  players (admin accounts only)
