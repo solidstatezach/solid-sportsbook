@@ -34,6 +34,7 @@ export default function Sportsbook() {
   // account state (Supabase mode only; all inert in local mode)
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [dbBets, setDbBets] = useState<DbBet[]>([]);
   const [authReady, setAuthReady] = useState(!isSupabaseEnabled);
   const [placing, setPlacing] = useState(false);
@@ -51,11 +52,12 @@ export default function Sportsbook() {
       setUser(u);
       if (!u) {
         setProfile(null);
+        setIsAdmin(false);
         setDbBets([]);
         setAuthReady(true);
         return;
       }
-      const [{ data: prof }, { data: bets }] = await Promise.all([
+      const [{ data: prof }, { data: bets }, { data: adminRow }] = await Promise.all([
         supabase
           .from("profiles")
           .select("id, display_name, balance")
@@ -66,9 +68,13 @@ export default function Sportsbook() {
           .select("*")
           .eq("user_id", u.id)
           .order("placed_at", { ascending: false }),
+        // is_admin lands with the admin migration; until then this errors
+        // quietly and the Admin link just stays hidden.
+        supabase.from("profiles").select("is_admin").eq("id", u.id).single(),
       ]);
       if (!active) return;
       setProfile((prof as Profile | null) ?? null);
+      setIsAdmin(Boolean((adminRow as { is_admin?: boolean } | null)?.is_admin));
       setDbBets((bets as DbBet[] | null) ?? []);
       setAuthReady(true);
     }
@@ -236,6 +242,11 @@ export default function Sportsbook() {
                   {formatMoney(Number(profile?.balance ?? 0))}
                 </span>
               </span>
+              {isAdmin && (
+                <Link href="/admin" className={`${chipClass} transition-colors hover:border-white/30 hover:text-white`}>
+                  Admin
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={signOut}
