@@ -94,7 +94,7 @@ export default function LeaderboardPage() {
               Leaderboard goes live when accounts are connected
             </p>
             <p className="mx-auto mt-2 max-w-sm text-xs leading-relaxed text-zinc-500">
-              Once sign-ups open, every player starts with $1,000 in play money and the
+              Once sign-ups open, every player starts with $15 in play money and the
               standings update as bets settle. Check back soon.
             </p>
           </div>
