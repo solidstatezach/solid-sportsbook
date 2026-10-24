@@ -16,6 +16,7 @@ function winPct(s: Standing): string {
 export default function LeaderboardPage() {
   const [standings, setStandings] = useState<Standing[] | null>(null);
   const [myId, setMyId] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [needsLogin, setNeedsLogin] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -33,6 +34,15 @@ export default function LeaderboardPage() {
         return;
       }
       setMyId(user.id);
+      // is_admin lands with the admin migration; until then this errors
+      // quietly and the Admin link just stays hidden.
+      const { data: adminRow } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single();
+      if (!active) return;
+      setIsAdmin(Boolean((adminRow as { is_admin?: boolean } | null)?.is_admin));
       const { data, error } = await supabase
         .from("leaderboard_standings")
         .select("id, display_name, balance, wins, losses, pushes, total_wagered")
@@ -55,16 +65,26 @@ export default function LeaderboardPage() {
         ← Back to the board
       </Link>
 
-      <header className="mt-5 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-lime-400 text-lg font-black text-zinc-950 shadow-[0_8px_24px_rgba(163,230,53,0.3)]">
-          S
+      <header className="mt-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-lime-400 text-lg font-black text-zinc-950 shadow-[0_8px_24px_rgba(163,230,53,0.3)]">
+            S
+          </div>
+          <div>
+            <h1 className="text-lg font-black uppercase leading-none tracking-wide text-zinc-50">
+              Leader<span className="text-lime-300">board</span>
+            </h1>
+            <p className="mt-1 text-xs text-zinc-500">Bragging rights, ranked by bankroll</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-lg font-black uppercase leading-none tracking-wide text-zinc-50">
-            Leader<span className="text-lime-300">board</span>
-          </h1>
-          <p className="mt-1 text-xs text-zinc-500">Bragging rights, ranked by bankroll</p>
-        </div>
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-zinc-300 transition-colors hover:border-white/30 hover:text-white"
+          >
+            Admin
+          </Link>
+        )}
       </header>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 shadow-lg shadow-black/30">
