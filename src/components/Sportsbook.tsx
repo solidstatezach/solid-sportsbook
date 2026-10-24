@@ -232,7 +232,7 @@ export default function Sportsbook() {
           </Link>
           {!isSupabaseEnabled ? (
             <span className={chipClass}>
-              Balance <span className="font-mono font-bold text-lime-300">$1,000.00</span>
+              Balance <span className="font-mono font-bold text-lime-300">$15.00</span>
             </span>
           ) : !authReady ? null : accountMode ? (
             <>
